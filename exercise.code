@@ -1,0 +1,89 @@
+using System;
+
+namespace GuessingGame
+{
+    class Input
+    {
+        public static int GetSingle(int i)
+        {
+            return i % 10;
+        }
+        
+        public static int GetTens(int i)
+        {
+            return (i % 100) / 10;
+        }
+       
+        public static int GetHundreds(int i)
+        {
+            return (i % 1000) / 100;
+        }
+        
+        public static int GetThousands(int i)
+        {
+            return (i-i % 1000) / 1000;
+        }
+    }
+    class Game
+    {
+        public static void GuessGame()
+        {
+            Random rdm = new Random();
+            int a, b, c, d;
+            a = rdm.Next(1, 6);
+            b = rdm.Next(1, 6);
+            c = rdm.Next(1, 6);
+            d = rdm.Next(1, 6);
+            for (int k = 0; k < 10; k++)
+            {
+                Console.WriteLine("Input a 4 digits number with each number between 1 and 6, {0} chances left", 10 - k);
+                int input = int.Parse(Console.ReadLine());
+                int d1 = Input.GetSingle(input), c1 = Input.GetTens(input), b1 = Input.GetHundreds(input), a1 = Input.GetThousands(input);
+                int Acount = 0, Bcount = 0;
+                if (a1 == a)
+                    Acount++;
+                else if (a1 == b || a1 == c || a1 == d)
+                    Bcount++;
+                if (b1 == b)
+                    Acount++;
+                else if (b1 == a || b1 == c || b1 == d)
+                    Bcount++;
+                if (c1 == c)
+                    Acount++;
+                else if (c1 == a || c1 == b || c1 == d)
+                    Bcount++;
+                if (d1 == d)
+                    Acount++;
+                else if (d1 == a || d1 == b || d1 == c)
+                    Bcount++;
+
+                if (Acount == 4)
+                {
+                    goto label;
+                }
+                else
+                    Console.WriteLine("{0}+{1}-", Acount, Bcount);
+                Console.WriteLine();
+            }
+            Console.WriteLine("Game over! Answer is {0}{1}{2}{3}", a, b, c, d);
+            goto label2;
+        label: Console.WriteLine("Congratulations! Answer is {0}{1}{2}{3}", a, b, c, d);
+            Game.GuessGame();
+        label2:
+            Console.ReadKey();
+            Game.GuessGame();
+        }
+    }
+  
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Game.GuessGame();
+            Console.ReadKey();
+        }
+    }
+    
+
+}
